@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import axios from "axios";
+import DeleteButton from "./DeleteButton";
 const AuthorList = (props) => {
   const { removeFromDom } = props;
   const deleteAuthor = (authorId) => {
@@ -10,6 +11,10 @@ const AuthorList = (props) => {
         removeFromDom(authorId);
       });
   };
+
+  const handleEdit = (e, author) => {
+    navigate("/edit/" + author._id);
+  };
   return (
     <div>
       {props.authors.map((author, idx) => {
@@ -17,15 +22,14 @@ const AuthorList = (props) => {
           <p key={idx}>
             <Link to={"/authors/" + author._id}>{author.name}</Link>
 
-            <Link to={"/authors/" + author._id + "/edit"}>Edit</Link>
+            <Link to={"/authors/" + author._id + "/edit"}>
+              <button onClick={(e) => handleEdit(e, author)}>Edit</button>
+            </Link>
 
-            <button
-              onClick={(e) => {
-                deleteAuthor(author._id);
-              }}
-            >
-              Delete
-            </button>
+            <DeleteButton
+              authorId={author._id}
+              successCallback={() => removeFromDom(author._id)}
+            />
           </p>
         );
       })}

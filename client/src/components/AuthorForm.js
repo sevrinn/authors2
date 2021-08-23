@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-const AuthorForm = () => {
+
+const AuthorForm = (props) => {
+  const { initialName, onSubmitProp } = props;
   const [name, setName] = useState("");
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-
-    axios
-      .post("http://localhost:8000/api/authors", {
-        name,
-      })
-      .then((res) => {
-        console.log(res);
-        setName("");
-      })
-      .catch((err) => console.log(err));
+    onSubmitProp({ name });
   };
 
   return (
